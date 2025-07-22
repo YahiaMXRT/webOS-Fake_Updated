@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yahia Shell</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      font-family: monospace;
+    }
+    .terminal {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      padding: 16px;
+      height: 100vh;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+    .prompt {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .segment {
+      background: #89b4fa;
+      color: #1e1e2e;
+      padding: 0 6px;
+      border-radius: 4px 0 0 4px;
+      margin-right: 2px;
+    }
+    .segment + .segment {
+      border-radius: 0;
+    }
+    .segment:last-child {
+      border-radius: 0 4px 4px 0;
+    }
+    .input-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .input-line input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: inherit;
+      font: inherit;
+      outline: none;
+      min-width: 200px;
+    }
+    .output {
+      white-space: pre-wrap;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal" id="terminal"></div>
+
+  <script>
+    const terminal = document.getElementById('terminal');
+    const commands = {
+      help: "Available commands: help, clear, echo, time, date, whoami, fakeip, yahia, about, commands, exit, pwd, ls, cd, mkdir, rmdir, touch, rm, cat, say, open, close, status, random, matrix, version, calc, ping, kill, fork, sleep, cowsay, moo, debug, alert, warning, load, reload, info, user",
+      clear: () => {
+        terminal.innerHTML = '';
+        newPrompt();
+        return '';
+      },
+      echo: (args) => args.join(' '),
+      time: () => new Date().toLocaleTimeString(),
+      date: () => new Date().toLocaleDateString(),
+      whoami: () => "yahiamxrt@webOS",
+      fakeip: () => "192.168.1." + Math.floor(Math.random() * 255),
+      yahia: () => "Yahia is the best dev!",
+      about: () => "YahiaShell v1.0 - a fake terminal for fun!",
+      commands: () => Object.keys(commands).join(', '),
+      exit: () => "Closing shell... (not really)",
+      pwd: () => "/home/yahia",
+      ls: () => "Documents  Downloads  Music  Projects",
+      cd: () => "Changed directory (not really)",
+      mkdir: () => "Directory created!",
+      rmdir: () => "Directory removed!",
+      touch: () => "File created!",
+      rm: () => "File deleted!",
+      cat: () => "Meow! (file content goes here)",
+      say: (args) => `You said: ${args.join(' ')}`,
+      open: () => "Opening window...",
+      close: () => "Window closed.",
+      status: () => "All systems functional.",
+      random: () => Math.floor(Math.random() * 1000).toString(),
+      matrix: () => "Wake up, Neo...",
+      version: () => "YahiaShell v1.0",
+      calc: (args) => {
+        try {
+          return eval(args.join(' '));
+        } catch (e) {
+          return "Error in calculation";
+        }
+      },
+      ping: () => "Pong!",
+      kill: () => "Process terminated.",
+      fork: () => "New process forked.",
+      sleep: () => "Zzzzz...",
+      cowsay: () => "< cow > Moo~",
+      moo: () => "Moooooooooo~",
+      debug: () => "Debug mode: ON",
+      alert: () => alert("Fake alert!"),
+      warning: () => "⚠ Warning: Fake terminal detected!",
+      load: () => "Loading... done!",
+      reload: () => location.reload(),
+      info: () => navigator.userAgent,
+      user: () => "YahiaUser01",
+    };
+
+    function newPrompt() {
+      const inputLine = document.createElement('div');
+      inputLine.className = 'input-line';
+
+      const prompt = document.createElement('div');
+      prompt.className = 'prompt';
+      prompt.innerHTML = `
+        <span class="segment">yahiamxrt</span>
+        <span class="segment">webOS</span>
+        <span class="segment">~</span>
+        <span class="segment">$</span>
+      `;
+
+      const input = document.createElement('input');
+      input.autofocus = true;
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const text = input.value.trim();
+          const args = text.split(' ');
+          const cmd = args.shift().toLowerCase();
+
+          const out = document.createElement('div');
+          out.className = 'output';
+          out.textContent = `> ${text}\n` +
+            (commands[cmd] ?
+              (typeof commands[cmd] === 'function' ? commands[cmd](args) : commands[cmd]) :
+              `Command not found: ${cmd}`);
+
+          terminal.appendChild(out);
+          inputLine.remove();
+          newPrompt();
+          terminal.scrollTop = terminal.scrollHeight;
+        }
+      });
+
+      inputLine.appendChild(prompt);
+      inputLine.appendChild(input);
+      terminal.appendChild(inputLine);
+      input.focus();
+    }
+
+    newPrompt();
+  </script>
+</body>
+</html>
