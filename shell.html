@@ -156,6 +156,11 @@
     }
 
     newPrompt();
+    window.addEventListener("load", () => {
+        const input = document.querySelector(".input-line input");
+        if (input) input.focus();
+    });
+
   </script>
 </body>
 </html>

@@ -1,9 +1,6 @@
 // Handle dragging for all windows
 var backup = document.body.innerHTML;
-var term = new Terminal();
-term.open(document.getElementById('terminal'));
-term.write('$ ')
-term.focus()
+
 document.querySelectorAll('.window').forEach((win) => {
   const titlebar = win.querySelector('.titlebar');
   let isDragging = false;
