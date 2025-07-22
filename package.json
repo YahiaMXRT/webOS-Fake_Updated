@@ -3,6 +3,7 @@
     "start": "servor --reload"
   },
   "dependencies": {
+    "@xterm/xterm": "^5.5.0",
     "servor": "^4.0.2"
   }
 }

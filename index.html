@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web OS with Multiple Windows</title>
+    <script src="node_modules/@xterm/xterm/lib/xterm.js"></script>
+    <link rel="stylesheet" href="node_modules/@xterm/xterm/css/xterm.css">
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -14,7 +16,7 @@
       <div id="loading-bar">Starting b4-OS</div>
     </div>
     <div class="window" id="login" style="display:none;">
-      <div class="titlebar">Hello</div>
+      <div class="titlebar">Login</div>
       <input type="text" placeholder="username" id="username" value="live">
       <button id="login2">login</button>
       <div class="resizer" style="
@@ -92,7 +94,19 @@
           </div>
         </div>
       </div>
-
+      <!-- terminal -->
+      
+      <div id="term-outline" class="window">
+        <div class="titlebar">
+          Terminal<button
+            class="close"
+            onclick="this.closest('div.window').remove()"
+          >
+            X</button
+          ><button class="minimize-btn">_</button>
+        </div>
+        <div id="terminal"></div>
+      </div>
       <!-- Another example window -->
       <div class="window" style="top: 250px; left: 300px">
         <div class="titlebar">
@@ -130,6 +144,7 @@
       </div>
     </div>
     <script>
+
         const resizer = document.querySelector('.resizer');
   const windowEl = document.getElementById('myWindow');
 
