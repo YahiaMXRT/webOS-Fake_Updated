@@ -1,3 +1,8 @@
-# webOS-Fake_Updated
+# Website OS
+[I am currently working on a working calculator]
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/YahiaMXRT/webOS-Fake_Updated)
+[age: i am 10 😁]
+
+web design level: pro
+
+Made using html js css only: YES

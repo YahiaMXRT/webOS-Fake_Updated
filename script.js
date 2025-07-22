@@ -85,6 +85,11 @@ function restoreOS() {
       });
     }
   });
+  setTimeout(() => {
+    document.getElementById('web-os').style.display = 'block';
+    document.getElementById('loading-bar').style.display = 'none';
+  }, 3250);
+  
 }
 
 function killOS() {
@@ -186,9 +191,14 @@ function newWindow() {
   backup = document.body.innerHTML;
 }
 setTimeout(() => {
-  document.getElementById('web-os').style.display = 'block';
+  document.getElementById('login').style.display = 'block';
   document.getElementById('loading-bar').style.display = 'none';
 }, 3250);
+document.getElementById("login2").addEventListener('click', () => {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('web-os').style.display = 'block';
+  document.getElementById('username2').innerText = `${document.getElementById('username').value}@pc-workstation`
+})
 var hidemenu = () => {
   if (document.getElementById('startmenu').style.display == 'none') {
     document.getElementById('startmenu').style.display = 'block';
@@ -196,3 +206,4 @@ var hidemenu = () => {
     document.getElementById('startmenu').style.display = 'none';
   }
 };
+
