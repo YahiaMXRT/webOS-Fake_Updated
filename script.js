@@ -6,23 +6,65 @@ document.querySelectorAll('.window').forEach((win) => {
   let isDragging = false;
   let offsetX, offsetY;
 
-  titlebar.addEventListener('mousedown', (e) => {
+  titlebar.addEventListener('pointerdown', (e) => {
     isDragging = true;
     offsetX = e.clientX - win.offsetLeft;
     offsetY = e.clientY - win.offsetTop;
     win.style.zIndex = 1000; // bring to front
   });
 
-  document.addEventListener('mousemove', (e) => {
+  // Touch support
+  titlebar.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    const touch = e.touches[0];
+    offsetX = touch.clientX - win.offsetLeft;
+    offsetY = touch.clientY - win.offsetTop;
+    win.style.zIndex = 1000;
+  });
+
+  document.addEventListener('pointermove', (e) => {
     if (isDragging) {
       win.style.left = `${e.clientX - offsetX}px`;
       win.style.top = `${e.clientY - offsetY}px`;
     }
   });
 
-  document.addEventListener('mouseup', () => {
+  // Touch move support
+  document.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      win.style.left = `${touch.clientX - offsetX}px`;
+      win.style.top = `${touch.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('pointerup', () => {
     isDragging = false;
   });
+  // Touch end support
+  document.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+  titlebar.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.setPointerCapture(e.pointerId);
+    win.style.zIndex = 1000;
+  });
+  
+  titlebar.addEventListener('pointermove', (e) => {
+    if (isDragging) {
+      win.style.left = `${e.clientX - offsetX}px`;
+      win.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+  
+  titlebar.addEventListener('pointerup', (e) => {
+    isDragging = false;
+    win.releasePointerCapture(e.pointerId);
+  });
+  
 });
 
 // Handle Add Skill buttons
@@ -65,7 +107,7 @@ function restoreOS() {
   // 🛠️ Reattach drag and minimize to all windows
   document.querySelectorAll('.window').forEach((win) => {
     makeDraggable(win);
-    attachMinimizeButton(win);
+    attachminimizeButton(win);
 
     // Reattach skill logic if skill section exists
     const addBtn = win.querySelector('.addSkillBtn');
@@ -108,8 +150,27 @@ function makeDraggable(win) {
   const titlebar = win.querySelector('.titlebar');
   let isDragging = false;
   let offsetX, offsetY;
-
-  titlebar.addEventListener('mousedown', (e) => {
+  titlebar.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.setPointerCapture(e.pointerId);
+    win.style.zIndex = 1000;
+  });
+  
+  titlebar.addEventListener('pointermove', (e) => {
+    if (isDragging) {
+      win.style.left = `${e.clientX - offsetX}px`;
+      win.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+  
+  titlebar.addEventListener('pointerup', (e) => {
+    isDragging = false;
+    win.releasePointerCapture(e.pointerId);
+  });
+  
+  titlebar.addEventListener('pointerdown', (e) => {
     isDragging = true;
     offsetX = e.clientX - win.offsetLeft;
     offsetY = e.clientY - win.offsetTop;
@@ -117,29 +178,97 @@ function makeDraggable(win) {
     localStorage.setItem('osBackup', `${document.body.innerHTML}`)
   });
 
-  document.addEventListener('mousemove', (e) => {
+  // Touch support for makeDraggable
+  titlebar.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    const touch = e.touches[0];
+    offsetX = touch.clientX - win.offsetLeft;
+    offsetY = touch.clientY - win.offsetTop;
+    win.style.zIndex = 1000;
+  });
+
+  document.addEventListener('pointermove', (e) => {
     if (isDragging) {
       win.style.left = `${e.clientX - offsetX}px`;
       win.style.top = `${e.clientY - offsetY}px`;
     }
   });
 
-  document.addEventListener('mouseup', () => {
+  // Touch move support for makeDraggable
+  document.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      win.style.left = `${touch.clientX - offsetX}px`;
+      win.style.top = `${touch.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('pointerup', () => {
+    isDragging = false;
+  });
+  // Touch end support for makeDraggable
+  document.addEventListener('touchend', () => {
     isDragging = false;
   });
 }
-function attachMinimizeButton(win) {
+function attachminimizeButton(win) {
   const button = win.querySelector('.minimize-btn');
   if (button) {
     button.addEventListener('click', () => {
       const content = win.querySelector('.window-content');
       content.style.display =
         content.style.display === 'none' ? 'block' : 'none';
+        content.style.resize === 'none' ? 'both' : 'none';
     });
   }
 }
+function newWindow3(type = "notes") {
+  var win = document.createElement('div');
+  win.className = 'window';
+  const top = Math.floor(Math.random() * (window.innerHeight - 200));
+  const left = Math.floor(Math.random() * (window.innerWidth - 300));
+  win.style.top = `${top}px`;
+  win.style.left = `${left}px`;
+
+  let content = '';
+  if (type === 'notes') {
+    content = `
+      <div class="titlebar">Notes
+        <button class="close" onclick="this.closest('div.window').remove()">X</button>
+        <button class="minimize-btn">_</button>
+      </div>
+      <div class="window-content">
+        <textarea style="width: 100%; height: 140px; margin-top: 15px;"></textarea>
+      </div>`;
+  } else if (type === 'terminal') {
+    content = `
+      <div class="titlebar">Terminal
+        <button class="close" onclick="this.closest('div.window').remove()">X</button>
+        <button class="minimize-btn">_</button>
+      </div>
+      <div class="window-content">
+        <iframe src="shell.html" frameborder="0" style="width: 100%; height: 150px;"></iframe>
+      </div>`;
+  } else if (type === 'minecraft') {
+    content = `
+      <div class="titlebar">MC Client
+        <button class="close" onclick="this.closest('div.window').remove()">X</button>
+        <button class="minimize-btn">_</button>
+      </div>
+      <div class="window-content">
+        <p>Launching Minecraft Hack Client UI... (Coming soon!)</p>
+      </div>`;
+  }
+
+  win.innerHTML = content;
+  document.body.appendChild(win);
+  makeDraggable(win);
+  attachminimizeButton(win);
+  backup = document.body.innerHTML;
+}
+
 document.querySelectorAll('.window').forEach((win) => {
-  attachMinimizeButton(win);
+  attachminimizeButton(win);
 });
 const clippy = document.getElementById('clippy');
 const clippyTalk = document.getElementById('clippy-talk');
@@ -188,27 +317,39 @@ function newWindow() {
     </div>`;
   document.body.appendChild(win);
   makeDraggable(win);
-  attachMinimizeButton(win);
+  attachminimizeButton(win);
   backup = document.body.innerHTML;
 }
 
-function newWindow() {
+function newWindow(argsr, custom, titlebar) {
   var win = document.createElement('div');
   win.className = 'window';
   const top = Math.floor(Math.random() * (window.innerHeight - 200)); // avoid off-screen
   const left = Math.floor(Math.random() * (window.innerWidth - 300)); // avoid off-screen
+  if (argsr == 'normal') {
+    win.style.top = `${top}px`;
+    win.style.left = `${left}px`;
+    win.innerHTML = `
+    <div class="titlebar">MC<button class="close" onclick="this.closest('div.window').remove()">X</button><button class="minimize-btn">_</button></div>
+      <div class="window-content">
 
-  win.style.top = `${top}px`;
-  win.style.left = `${left}px`;
-
-  win.innerHTML = `
-  <div class="titlebar">MC<button class="close" onclick="this.closest('div.window').remove()">X</button><button class="minimize-btn">_</button></div>
-    <div class="window-content">
-    
+      </div>
     </div>`;
+  } else if (argsr == 'custom') {
+    win.style.top = `${top}px`;
+    win.style.left = `${left}px`;
+
+    win.innerHTML = `
+    <div class="titlebar">${titlebar}<button class="close" onclick="this.closest('div.window').remove()">X</button><button class="minimize-btn">_</button></div>
+      <div class="window-content">
+        ${custom}
+      </div>
+    </div>
+    `;
+  }
   document.body.appendChild(win);
   makeDraggable(win);
-  attachMinimizeButton(win);
+  attachminimizeButton(win);
   backup = document.body.innerHTML;
 }
 setTimeout(() => {
@@ -220,6 +361,16 @@ document.getElementById("login2").addEventListener('click', () => {
   document.getElementById('web-os').style.display = 'block';
   document.getElementById('username2').innerText = `${document.getElementById('username').value}@pc-workstation`
   localStorage.setItem('username', `${document.getElementById('username').value}`)
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
+  document.querySelector("#term-outline iframe").contentWindow.location.reload();
+  if (localStorage.getItem('user') === 'adamkhaled') {
+  }
+  if (localStorage.getItem('user') === 'omarsaly') {
+    newWindow('custom', `<h1>Weeeeeeelome Omar!!!!</h1><p>You are a special gus</p>`)
+  }
+
 })
 var hidemenu = () => {
   if (document.getElementById('startmenu').style.display == 'none') {
@@ -228,4 +379,3 @@ var hidemenu = () => {
     document.getElementById('startmenu').style.display = 'none';
   }
 };
-

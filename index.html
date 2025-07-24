@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
     <title>Web OS with Multiple Windows</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/5.5.0/xterm.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/5.5.0/xterm.css">
@@ -14,6 +16,7 @@
   <body>
     <div class="container">
       <div id="loading-bar">Starting b4-OS</div>
+      <div>RUN IN FULLSCREEN OR THINGS WILL BREAK</div>
     </div>
     <div class="window" id="login" style="display:none;"> 
       <div class="titlebar">Login</div>
@@ -25,6 +28,22 @@
     </div>
     </div>
     <div id="web-os" style="display: none">
+      <!-- Desktop Icons -->
+<div class="desktop-icon" style="top: 80px; left: 30px;" onclick="newWindow3('notes')">
+  <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" />
+  <div>Notes</div>
+</div>
+
+<div class="desktop-icon" style="top: 160px; left: 30px;" onclick="newWindow3('terminal')">
+  <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" />
+  <div>Terminal</div>
+</div>
+
+<div class="desktop-icon" style="top: 240px; left: 30px;" onclick="newWindow3('minecraft')">
+  <img src="https://cdn-icons-png.flaticon.com/512/871/871377.png" />
+  <div>MC Client</div>
+</div>
+
       <div
         id="clippy"
         style="
