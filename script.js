@@ -114,6 +114,7 @@ function makeDraggable(win) {
     offsetX = e.clientX - win.offsetLeft;
     offsetY = e.clientY - win.offsetTop;
     win.style.zIndex = 1000;
+    localStorage.setItem('osBackup', `${document.body.innerHTML}`)
   });
 
   document.addEventListener('mousemove', (e) => {
@@ -190,6 +191,26 @@ function newWindow() {
   attachMinimizeButton(win);
   backup = document.body.innerHTML;
 }
+
+function newWindow() {
+  var win = document.createElement('div');
+  win.className = 'window';
+  const top = Math.floor(Math.random() * (window.innerHeight - 200)); // avoid off-screen
+  const left = Math.floor(Math.random() * (window.innerWidth - 300)); // avoid off-screen
+
+  win.style.top = `${top}px`;
+  win.style.left = `${left}px`;
+
+  win.innerHTML = `
+  <div class="titlebar">MC<button class="close" onclick="this.closest('div.window').remove()">X</button><button class="minimize-btn">_</button></div>
+    <div class="window-content">
+    
+    </div>`;
+  document.body.appendChild(win);
+  makeDraggable(win);
+  attachMinimizeButton(win);
+  backup = document.body.innerHTML;
+}
 setTimeout(() => {
   document.getElementById('login').style.display = 'block';
   document.getElementById('loading-bar').style.display = 'none';
@@ -198,6 +219,7 @@ document.getElementById("login2").addEventListener('click', () => {
   document.getElementById('login').style.display = 'none';
   document.getElementById('web-os').style.display = 'block';
   document.getElementById('username2').innerText = `${document.getElementById('username').value}@pc-workstation`
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
 })
 var hidemenu = () => {
   if (document.getElementById('startmenu').style.display == 'none') {
