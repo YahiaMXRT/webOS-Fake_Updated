@@ -1,4 +1,6 @@
-// Handle dragging for all windows (pointer events are best for both mouse and touch)
+// Handle dragging for all windows
+var backup = document.body.innerHTML;
+
 document.querySelectorAll('.window').forEach((win) => {
   const titlebar = win.querySelector('.titlebar');
   let isDragging = false;
@@ -8,21 +10,61 @@ document.querySelectorAll('.window').forEach((win) => {
     isDragging = true;
     offsetX = e.clientX - win.offsetLeft;
     offsetY = e.clientY - win.offsetTop;
-    win.setPointerCapture(e.pointerId);
+    win.style.zIndex = 1000; // bring to front
+  });
+
+  // Touch support
+  titlebar.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    const touch = e.touches[0];
+    offsetX = touch.clientX - win.offsetLeft;
+    offsetY = touch.clientY - win.offsetTop;
     win.style.zIndex = 1000;
   });
 
-  titlebar.addEventListener('pointermove', (e) => {
+  document.addEventListener('pointermove', (e) => {
     if (isDragging) {
       win.style.left = `${e.clientX - offsetX}px`;
       win.style.top = `${e.clientY - offsetY}px`;
     }
   });
 
+  // Touch move support
+  document.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      win.style.left = `${touch.clientX - offsetX}px`;
+      win.style.top = `${touch.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('pointerup', () => {
+    isDragging = false;
+  });
+  // Touch end support
+  document.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+  titlebar.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.setPointerCapture(e.pointerId);
+    win.style.zIndex = 1000;
+  });
+  
+  titlebar.addEventListener('pointermove', (e) => {
+    if (isDragging) {
+      win.style.left = `${e.clientX - offsetX}px`;
+      win.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+  
   titlebar.addEventListener('pointerup', (e) => {
     isDragging = false;
     win.releasePointerCapture(e.pointerId);
   });
+  
 });
 
 // Handle Add Skill buttons
@@ -115,15 +157,58 @@ function makeDraggable(win) {
     win.setPointerCapture(e.pointerId);
     win.style.zIndex = 1000;
   });
+  
   titlebar.addEventListener('pointermove', (e) => {
     if (isDragging) {
       win.style.left = `${e.clientX - offsetX}px`;
       win.style.top = `${e.clientY - offsetY}px`;
     }
   });
+  
   titlebar.addEventListener('pointerup', (e) => {
     isDragging = false;
     win.releasePointerCapture(e.pointerId);
+  });
+  
+  titlebar.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.style.zIndex = 1000;
+    localStorage.setItem('osBackup', `${document.body.innerHTML}`)
+  });
+
+  // Touch support for makeDraggable
+  titlebar.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    const touch = e.touches[0];
+    offsetX = touch.clientX - win.offsetLeft;
+    offsetY = touch.clientY - win.offsetTop;
+    win.style.zIndex = 1000;
+  });
+
+  document.addEventListener('pointermove', (e) => {
+    if (isDragging) {
+      win.style.left = `${e.clientX - offsetX}px`;
+      win.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  // Touch move support for makeDraggable
+  document.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      win.style.left = `${touch.clientX - offsetX}px`;
+      win.style.top = `${touch.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener('pointerup', () => {
+    isDragging = false;
+  });
+  // Touch end support for makeDraggable
+  document.addEventListener('touchend', () => {
+    isDragging = false;
   });
 }
 function attachminimizeButton(win) {
@@ -274,15 +359,19 @@ setTimeout(() => {
 document.getElementById("login2").addEventListener('click', () => {
   document.getElementById('login').style.display = 'none';
   document.getElementById('web-os').style.display = 'block';
-  document.getElementById('username2').innerText = `${document.getElementById('username').value}@pc-workstation`;
-  localStorage.setItem('username', `${document.getElementById('username').value}`);
+  document.getElementById('username2').innerText = `${document.getElementById('username').value}@pc-workstation`
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
+  localStorage.setItem('username', `${document.getElementById('username').value}`)
   document.querySelector("#term-outline iframe").contentWindow.location.reload();
   if (localStorage.getItem('user') === 'adamkhaled') {
   }
   if (localStorage.getItem('user') === 'omarsaly') {
     newWindow('custom', `<h1>Weeeeeeelome Omar!!!!</h1><p>You are a special gus</p>`)
   }
-});
+
+})
 var hidemenu = () => {
   if (document.getElementById('startmenu').style.display == 'none') {
     document.getElementById('startmenu').style.display = 'block';
