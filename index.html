@@ -25,7 +25,7 @@
       <div class="resizer" style="
       width: 15px; height: 15px; background: gray;
       position: absolute; right: 0; bottom: 0; cursor: se-resize;">
-    </div>
+     </div>
     </div>
     <div id="web-os" style="display: none">
       <!-- Desktop Icons -->
@@ -164,27 +164,6 @@
         <div class="clock" id="clock">00:00</div>
       </div>
     </div>
-    <script>
-
-        const resizer = document.querySelector('.resizer');
-  const windowEl = document.getElementById('myWindow');
-
-  resizer.addEventListener('mousedown', function(e) {
-    e.preventDefault();
-    window.addEventListener('mousemove', resize);
-    window.addEventListener('mouseup', stopResize);
-  });
-
-  function resize(e) {
-    windowEl.style.width = (e.clientX - windowEl.offsetLeft) + 'px';
-    windowEl.style.height = (e.clientY - windowEl.offsetTop) + 'px';
-  }
-
-  function stopResize() {
-    window.removeEventListener('mousemove', resize);
-    window.removeEventListener('mouseup', stopResize);
-  }
-    </script>
     <script src="script.js"></script>
   </body>
 </html>

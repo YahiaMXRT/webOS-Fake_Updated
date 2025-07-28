@@ -175,29 +175,6 @@ button {
   overflow: visible;
 }
 .taskbar {
-  flex-wrap: wrap;
-  height: auto;
-  padding: 5px;
-  font-size: 12px;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  border-radius: 0;
-}
-textarea {
-  font-size: 14px;
-  resize: vertical;
-}
-.window-content {
-  max-height: 60vh;
-  overflow-y: auto;
-}
-
-.container {
-  display: flex;
-  justify-self: center;
-}
-.desktop-icon {
   position: absolute;
   width: 64px;
   text-align: center;
@@ -212,6 +189,37 @@ textarea {
   width: 40px;
   height: 40px;
   margin-bottom: 4px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+textarea {
+  font-size: 14px;
+  resize: vertical;
+}
+
+.window-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Responsive taskbar */
+@media (max-width: 768px) {
+  .taskbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 5px;
+    font-size: 12px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
 }
 
 @keyframes load {
