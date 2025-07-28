@@ -335,12 +335,16 @@ function hidemenu() {
 
 // Login functionality
 function initializeLogin() {
-  setTimeout(() => {
-    const loginElement = document.getElementById('login');
-    const loadingBar = document.getElementById('loading-bar');
-    if (loginElement) loginElement.style.display = 'block';
-    if (loadingBar) loadingBar.style.display = 'none';
-  }, 3250);
+  // Show login after loading
+  const loadingBar = document.getElementById('loading-bar');
+  const loginElement = document.getElementById('login');
+  
+  if (loadingBar && loginElement) {
+    setTimeout(() => {
+      loadingBar.style.display = 'none';
+      loginElement.style.display = 'block';
+    }, 3250);
+  }
 
   const loginBtn = document.getElementById("login2");
   if (loginBtn) {
@@ -355,8 +359,13 @@ function handleLogin() {
   const username2Element = document.getElementById('username2');
   const terminalIframe = document.querySelector("#term-outline iframe");
 
-  if (loginElement) loginElement.style.display = 'none';
-  if (webOS) webOS.style.display = 'block';
+  // Hide login and show web-os
+  if (loginElement) {
+    loginElement.style.display = 'none';
+  }
+  if (webOS) {
+    webOS.style.display = 'block';
+  }
   
   if (usernameElement && username2Element) {
     const username = usernameElement.value || 'guest';
@@ -367,6 +376,10 @@ function handleLogin() {
   if (terminalIframe) {
     terminalIframe.contentWindow.location.reload();
   }
+  
+  // Initialize everything after login
+  initializeWindows();
+  startClock();
 
   // Special user handling
   const storedUser = localStorage.getItem('username');
