@@ -20,8 +20,10 @@
     </div>
     <div class="window" id="login" style="display:none;"> 
       <div class="titlebar">Login</div>
-      <input type="text" placeholder="username" id="username" value="live">
-      <button id="login2">login</button>
+      <div style="padding: 20px;">
+        <input type="text" placeholder="Enter username" id="username" value="live" style="width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 4px;">
+        <button id="login2" style="width: 100%; padding: 8px; background: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer;">Login</button>
+      </div>
       <div class="resizer" style="
       width: 15px; height: 15px; background: gray;
       position: absolute; right: 0; bottom: 0; cursor: se-resize;">
@@ -53,7 +55,8 @@
           width: 80px;
           height: 80px;
           z-index: 9999;
-          pointer-events: none;
+          pointer-events: auto;
+          cursor: pointer;
           background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/572d2149-3f08-4ebf-bd41-470663731799/dd1n0u5-2ac9d09d-0678-414a-94a2-8e329a2b1078.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzU3MmQyMTQ5LTNmMDgtNGViZi1iZDQxLTQ3MDY2MzczMTc5OVwvZGQxbjB1NS0yYWM5ZDA5ZC0wNjc4LTQxNGEtOTRhMi04ZTMyOWEyYjEwNzgucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LmuATxImsoN3FFeO1Qtk9tjphs4qiEzxwSt74378gyc');
           background-size: contain;
           background-repeat: no-repeat;
@@ -117,31 +120,34 @@
 
       <div id="term-outline" class="window">
         <div class="titlebar">
-          Terminal<button
+          Terminal
+          <button
             class="close"
             onclick="this.closest('div.window').remove()"
           >
-            X</button
-          ><button class="minimize-btn">_</button>
+            ×
+          </button>
+          <button class="minimize-btn">−</button>
         </div>
         <div class="window-content">
-        <iframe src="shell.html" frameborder="0" style="width: 100%; height: 150px;"></iframe>
+          <iframe src="shell.html" frameborder="0" style="width: 100%; height: 150px; border: none;"></iframe>
         </div>
       </div>
       <!-- Another example window -->
       <div class="window" style="top: 250px; left: 300px">
         <div class="titlebar">
-          notes<button
+          Notes
+          <button
             class="close"
             onclick="this.closest('div.window').remove()"
           >
-            X</button
-          ><button class="minimize-btn">_</button>
+            ×
+          </button>
+          <button class="minimize-btn">−</button>
         </div>
         <div class="window-content">
           <textarea
-            name=""
-            id=""
+            placeholder="Start typing your notes..."
             style="width: 100%; height: 140px; margin-top: 15px"
           ></textarea>
         </div>
@@ -154,7 +160,7 @@
             Launch Notes
           </button>
           <button class="start-button" onclick="newWindow2()">
-            Launch Minecraft *Hack Client*
+            Launch Minecraft Client
           </button>
         </div>
         <div class="taskbar-center">
@@ -164,6 +170,6 @@
         <div class="clock" id="clock">00:00</div>
       </div>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
   </body>
 </html>
